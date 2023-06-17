@@ -34,6 +34,12 @@
             <version>2.1.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.amadeus/amadeus-java -->
+        <dependency>
+            <groupId>com.amadeus</groupId>
+            <artifactId>amadeus-java</artifactId>
+            <version>7.0.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
