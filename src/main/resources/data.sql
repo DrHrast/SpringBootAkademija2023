@@ -41,9 +41,13 @@ CREATE TABLE rezultati_pretrage (
     prijevoznik VARCHAR(50),
     cijena VARCHAR(10),
 
+    id_pretrage INT,
+
     datum_kreiranja DATE,
     korisnik_kreiranja VARCHAR(50),
     datum_azuriranja DATE,
     korisnik_azuriranja VARCHAR(50)
 
 );
+
+ALTER TABLE rezultati_pretrage ADD FOREIGN KEY (id_pretrage) REFERENCES pretrage_letova (id);

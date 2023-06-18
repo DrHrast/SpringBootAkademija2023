@@ -6,13 +6,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "rezultati_pretrage")
-public class FlightSeacrhResultEntity {
+public class FlightSearchResultEntity extends BasicEntity{
 
-
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     @Column(name = "polazak_aerodrom_plazni_let")
     private String outboundDepartureAirport;
     @Column(name = "polazak_sifra_aerodroma_odrediste")
@@ -38,27 +33,10 @@ public class FlightSeacrhResultEntity {
     @Column(name = "cijena")
     private String price;
 
+    @ManyToOne
+    @JoinColumn(name = "id_pretrage")
+    private FlightSearchEntity flightSearchEntity;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FlightSeacrhResultEntity that = (FlightSeacrhResultEntity) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getOutboundDepartureAirport() {
         return outboundDepartureAirport;
@@ -138,5 +116,13 @@ public class FlightSeacrhResultEntity {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public FlightSearchEntity getFlightSearchEntity() {
+        return flightSearchEntity;
+    }
+
+    public void setFlightSearchEntity(FlightSearchEntity flightSearchEntity) {
+        this.flightSearchEntity = flightSearchEntity;
     }
 }

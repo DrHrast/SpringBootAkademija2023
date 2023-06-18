@@ -9,8 +9,10 @@ import com.amadeus.resources.Location;
 import hr.king.springbootakademija2023.dto.FlightSearchResultDto;
 import hr.king.springbootakademija2023.dto.LocationDto;
 import hr.king.springbootakademija2023.mapper.FlightOfferSearchFlightSearchResultDtoMapper;
+import hr.king.springbootakademija2023.mapper.FlightSearchResultDtoFlightSearchResultEntityMapper;
 import hr.king.springbootakademija2023.model.FlightSearchEntity;
 import hr.king.springbootakademija2023.repository.FlightSearchEntityRepository;
+import hr.king.springbootakademija2023.repository.FlightSearchResultEntityRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,12 @@ public class AmadeusService {
 
     @Autowired
     private FlightSearchEntityRepository flightSearchEntityRepository;
+
+    @Autowired
+    private FlightSearchResultEntityRepository flightSearchResultEntityRepository;
+
+    @Autowired
+    private FlightSearchResultDtoFlightSearchResultEntityMapper flightSearchResultDtoFlightSearchResultEntityMapper;
 
 
     public List<Location> searchAirports(String keyword) {
@@ -97,6 +105,14 @@ public class AmadeusService {
             List<FlightSearchResultDto> flightSearchResultDtoList = flightOfferSearchList.stream()
                     .map(flightOfferSearch -> flightSearchResultDtoMapper.map(flightOfferSearch))
                     .toList();
+
+            flightSearchResultDtoList.stream()
+                    .map(flightSearchResultDto -> flightSearchResultDtoFlightSearchResultEntityMapper.map(flightSearchResultDto))
+                    .forEach(flightSeacrhResultEntity ->
+                    {
+                        flightSeacrhResultEntity.setFlightSearchEntity(flightSearchEntity);
+                        flightSearchResultEntityRepository.save(flightSeacrhResultEntity);
+                    });
 
             return flightSearchResultDtoList;
 
