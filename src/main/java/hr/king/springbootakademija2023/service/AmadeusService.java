@@ -9,6 +9,9 @@ import com.amadeus.resources.Location;
 import hr.king.springbootakademija2023.dto.FlightSearchResultDto;
 import hr.king.springbootakademija2023.dto.LocationDto;
 import hr.king.springbootakademija2023.mapper.FlightOfferSearchFlightSearchResultDtoMapper;
+import hr.king.springbootakademija2023.model.FlightSearchEntity;
+import hr.king.springbootakademija2023.repository.FlightSearchEntityRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ public class AmadeusService {
     @Autowired
     private Amadeus amadeus;
 
+    @Autowired
+    private FlightSearchEntityRepository flightSearchEntityRepository;
+
 
     public List<Location> searchAirports(String keyword) {
 
@@ -51,13 +57,25 @@ public class AmadeusService {
         }
     }
 
-
+    @Transactional
     public List<FlightSearchResultDto> searchFlights(String originLocationCode,
                                         String destinationLocationCode,
                                         LocalDate departureDate,
                                         LocalDate returnDate,
                                         Integer adults) {
         try {
+
+            FlightSearchEntity flightSearchEntity = new FlightSearchEntity();
+            flightSearchEntity.setOriginLocationCode(originLocationCode);
+            flightSearchEntity.setDestinationLocationCode(destinationLocationCode);
+            flightSearchEntity.setDepartureDate(departureDate);
+            flightSearchEntity.setAdults(adults);
+            flightSearchEntity.setReturnDate(returnDate);
+
+            flightSearchEntity.setDateCreated(LocalDate.now());
+            flightSearchEntity.setUserCreated("Petar");
+
+            flightSearchEntityRepository.save(flightSearchEntity);
 
             Params params = Params
                     .with("originLocationCode", originLocationCode)
